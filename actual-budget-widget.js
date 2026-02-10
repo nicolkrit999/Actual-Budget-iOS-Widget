@@ -1,24 +1,28 @@
 // === 📦 CONFIGURATION VARIABLES ===
 
-// 🔑 Your Actual Budget sync ID (Settings → Advanced → Sync ID)
+// 🔑 Your Actual Budget sync ID (Settings → Advanced → Sync ID) (change)
 const syncId = "YOUR_SYNC_ID"
 
-// 🔐 API key set in your actual-http-api server (must match the `API_KEY` env variable)
+// 🔐 API key set in your actual-http-api server (must match the `API_KEY` env variable) (change)
 const apiKey = "YOUR_API_KEY"
 
-// 🌐 Base URL of your actual-http-api instance (no trailing slash)
+// 🌐 Base URL of your actual-http-api instance (no trailing slash) (change)
 const apiBaseUrl = "https://your-actual-api.example.com"
 
 // 📁 Name of the category group to display in the widget
-const targetGroupName = "Category Group Title"
+const targetGroupNames = [
+  "Monthly Bills",
+  "Living Expenses",
+  "Fun Money" 
+]
 
-// 💸 Currency formatting
+// 💸 Currency formatting (change if needed)
 const currencyPrefix = "$"  // Symbol shown before the number
 const currencySuffix = ""   // Text shown after the number
 
 // === 🎨 APPEARANCE SETTINGS ===
 
-// Font sizes
+// ⚠ Font sizes (change if needed)
 const textSize = 16                         // Category name
 const balanceSize = 16                      // Category balance
 const groupTitleSize = 12                   // Title line
@@ -169,17 +173,25 @@ if (enableDebugLogging) {
 
 // === 📂 Display category group
 const groups = data.data
-const targetGroup = groups.find(g => g.name === targetGroupName)
 
-if (!targetGroup) {
-  w.addText(`❌ Group '${targetGroupName}' not found`)
-} else {
-  const title = w.addText(`${prettyMonth} • ${targetGroup.name}`)
+for (const groupName of targetGroupNames) {
+  const targetGroup = groups.find(g => g.name === groupName)
+
+  if (!targetGroup) {
+    const err = w.addText(`❌ Group '${groupName}' not found`)
+    err.textColor = Color.red()
+    w.addSpacer(12)
+    continue
+  }
+
+  const title = w.addText(`${targetGroup.name}`)
   title.font = Font.boldSystemFont(groupTitleSize)
   title.textColor = groupTitleColor
-  w.addSpacer(12)
+  w.addSpacer(4)
 
   for (const cat of targetGroup.categories) {
+    if (cat.hidden || cat.balance === 0) continue 
+
     const stack = w.addStack()
     stack.layoutHorizontally()
     stack.centerAlignContent()
@@ -199,6 +211,8 @@ if (!targetGroup) {
 
     w.addSpacer(itemSpacing)
   }
+  
+  w.addSpacer(12)
 }
 
 // === 📦 Insert uncategorised transaction box (if applicable)
