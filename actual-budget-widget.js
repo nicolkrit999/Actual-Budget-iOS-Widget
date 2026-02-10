@@ -9,7 +9,7 @@ const apiKey = "YOUR_API_KEY"
 // 🌐 Base URL of your actual-http-api instance (no trailing slash) (change)
 const apiBaseUrl = "https://your-actual-api.example.com"
 
-// 📁 Name of the category group to display in the widget
+// 📁 Name of the category group to display in the widget (change)
 const targetGroupNames = [
   "Monthly Bills",
   "Living Expenses",
