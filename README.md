@@ -35,7 +35,12 @@ This is a custom iOS widget for [Actual Budget](https://actualbudget.org), built
 const syncId = "YOUR_SYNC_ID"
 const apiKey = "YOUR_API_KEY"
 const apiBaseUrl = "https://your-actual-api.example.com"
-const targetGroupName = "Category Group Title"
+const targetGroupNames = [
+  // If there is only one group remove the comma at the end. Basically always a comma except for the last entry
+  // The ios widgets are not scrollable. If the categories are many it could be necessary to change the font size and spacing and/or create multiple widgets
+  "",
+  ""
+]
 ```
 
 4.	**Optional: Customize appearance** (currency, fonts, colors, spacing).
